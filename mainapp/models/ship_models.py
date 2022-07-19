@@ -2,6 +2,7 @@ from django.db import models
 
 from mainapp.models.node_models import Node
 from mainapp.models.edge_models import SeaRoute
+from mainapp.models.icebreaker_models import Icebreaker
 
 
 class TransportShip(models.Model):
@@ -18,6 +19,7 @@ class TransportShip(models.Model):
     current_load = models.PositiveIntegerField()
 
     class Navigation:
+        icebreaker = models.ForeignKey(Icebreaker, null=True, related_name='ships', on_delete=models.CASCADE)
         sea_port = models.ForeignKey(Node, null=True, related_name='ships', on_delete=models.CASCADE)
         sea_route = models.ForeignKey(SeaRoute, null=True, related_name='ships', on_delete=models.CASCADE)
         departure = models.DateTimeField(null=True)

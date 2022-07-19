@@ -3,11 +3,13 @@ from django.db import models
 
 class Node(models.Model):
     NODE_TYPES = (
+        ('SN', 'Sea Node'),
         ('SP', 'Seaport'),
-        ('L', 'Land')
+        ('LN', 'Land Node'),
+        ('LH', 'Land Hub'),
     )
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True)
     type = models.CharField(max_length=255, choices=NODE_TYPES)
 
     coord_x = models.DecimalField(max_digits=5, decimal_places=2)
