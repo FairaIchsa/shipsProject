@@ -14,3 +14,5 @@ class Resource(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_type_display()})"
+
+    # добавить функции, проверяющие совместимость с кораблями/путями

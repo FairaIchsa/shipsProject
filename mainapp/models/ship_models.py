@@ -18,9 +18,8 @@ class TransportShip(models.Model):
     load_capacity = models.PositiveIntegerField()
     current_load = models.PositiveIntegerField()
 
-    class Navigation:
-        icebreaker = models.ForeignKey(Icebreaker, null=True, related_name='ships', on_delete=models.CASCADE)
-        sea_port = models.ForeignKey(Node, null=True, related_name='ships', on_delete=models.CASCADE)
-        sea_route = models.ForeignKey(SeaRoute, null=True, related_name='ships', on_delete=models.CASCADE)
-        departure = models.DateTimeField(null=True)
-        arrival = models.DateTimeField(null=True)
+    icebreaker = models.ForeignKey(Icebreaker, null=True, related_name='ships', on_delete=models.CASCADE)
+    sea_port = models.ForeignKey(Node, null=True, related_name='ships', on_delete=models.CASCADE)
+    sea_route = models.ForeignKey(SeaRoute, null=True, related_name='ships', on_delete=models.CASCADE)
+    departure = models.DateTimeField(null=True)
+    arrival = models.DateTimeField(null=True)

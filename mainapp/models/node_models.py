@@ -6,14 +6,19 @@ class Node(models.Model):
         ('SN', 'Sea Node'),
         ('SP', 'Seaport'),
         ('LN', 'Land Node'),
-        ('LH', 'Land Hub'),
+        ('LH', 'Land Hub'),     # возможно, не будет использован
     )
 
-    name = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=255)
     type = models.CharField(max_length=255, choices=NODE_TYPES)
-
-    coord_x = models.DecimalField(max_digits=5, decimal_places=2)
-    coord_y = models.DecimalField(max_digits=5, decimal_places=2)
+    coordinates = models.CharField(max_length=255)
+    # country = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"{self.name} ({self.get_type_display()})"
+
+    def is_on_water(self):
+        return self.type == 'SN' or self.type == 'SP'
+
+    def is_hub(self):
+        return self.type == 'SP' or self.type == 'LH'

@@ -41,6 +41,7 @@ class ContractedOffer(Cargo):
     end_node = models.ForeignKey(Node, related_name='contracted_offers_to', on_delete=models.CASCADE)
     buy_price = models.DecimalField(max_digits=12, decimal_places=2)
     sell_price = models.DecimalField(max_digits=12, decimal_places=2)
+    expenses = models.DecimalField(max_digits=12, decimal_places=2)
     picked = models.BooleanField(default=False)
     departure = models.DateTimeField(null=True)  # возможно, стоит сделать PositiveBigIntegerField
     arrival = models.DateTimeField(null=True)

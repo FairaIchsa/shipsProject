@@ -16,8 +16,8 @@ class SeaRoute(Edge):  # добавить валидатор: оба нода д
     start_node = models.ForeignKey(Node, on_delete=models.PROTECT, related_name='sea_start_for')
     end_node = models.ForeignKey(Node, on_delete=models.PROTECT, related_name='sea_end_for')
     ice_level = models.PositiveSmallIntegerField()  # добавить validator
-    fullness = models.PositiveSmallIntegerField()   # текущая заполненность
-    bandwidth = models.PositiveSmallIntegerField()  # пропускная способность
+    # fullness = models.PositiveSmallIntegerField()   # текущая заполненность
+    # bandwidth = models.PositiveSmallIntegerField()  # пропускная способность
 
     def __str__(self):
         return f"Sea route {self.start_node}-{self.end_node}"
