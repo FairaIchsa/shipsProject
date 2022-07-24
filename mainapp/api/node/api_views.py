@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .serializers import NodeListSerializer, NodeRetrieveSerializer
 
-from mainapp.models.node_models import Node
+from mainapp.models.port_models import Node
 
 
 class NodeModelViewSet(ModelViewSet):

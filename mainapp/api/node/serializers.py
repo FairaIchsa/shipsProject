@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mainapp.models.node_models import Node
+from mainapp.models.port_models import Node
 
 
 class NodeListSerializer(serializers.ModelSerializer):

@@ -1,47 +1,27 @@
 from django.db import models
 
-from mainapp.models.ship_models import TransportShip
 from mainapp.models.resource_models import Resource
-from mainapp.models.edge_models import LandRoute
-from mainapp.models.node_models import Node
+from mainapp.models.ship_models import Ship
+from mainapp.models.port_models import Port, LoadingSection
 
 
 class Cargo(models.Model):
-    class Meta:
-        abstract = True
-
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-
-
-class ShipCargo(Cargo):
-    owner = models.ForeignKey(TransportShip, on_delete=models.CASCADE, related_name='cargos')
-
-    def __str__(self):
-        return f"{self.id} Cargo {self.resource.name} of {self.owner}"
+    type = models.ForeignKey(Resource, related_name='cargos', on_delete=models.CASCADE)
+    weight = models.PositiveIntegerField()
+    board_cargo = models.OneToOneField('BoardCargo', related_name='cargo', null=True, on_delete=models.CASCADE)
+    port = models.ForeignKey(LoadingSection, related_name='cargos', null=True, on_delete=models.CASCADE)
 
 
-class LandCargo(models.Model):
-    route = models.ForeignKey(LandRoute, on_delete=models.CASCADE, related_name='cargos')
-    departure = models.DateTimeField()  # возможно, стоит сделать PositiveBigIntegerField
-    arrival = models.DateTimeField()
-
-    def __str__(self):
-        return f"{self.id} Cargo {self.resource.name} on {self.route}"
+class BoardCargo(models.Model):
+    # ship = models.ForeignKey(Ship, related_name='cargos', on_delete=models.CASCADE)
+    fraght = models.ForeignKey('Fraght', related_name='cargos', on_delete=models.CASCADE)
+    is_loaded = models.BooleanField()
+    deadweight = models.DecimalField(max_digits=12, decimal_places=2)
 
 
-class Offer(Cargo):
-    node = models.ForeignKey(Node, related_name='offers', on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=12, decimal_places=2)
-
-
-class ContractedOffer(Cargo):
-    owner = models.ForeignKey(TransportShip, related_name='contracted_offers', on_delete=models.CASCADE)
-    start_node = models.ForeignKey(Node, related_name='contracted_offers_from', on_delete=models.CASCADE)
-    end_node = models.ForeignKey(Node, related_name='contracted_offers_to', on_delete=models.CASCADE)
-    buy_price = models.DecimalField(max_digits=12, decimal_places=2)
-    sell_price = models.DecimalField(max_digits=12, decimal_places=2)
-    expenses = models.DecimalField(max_digits=12, decimal_places=2)
-    picked = models.BooleanField(default=False)
-    departure = models.DateTimeField(null=True)  # возможно, стоит сделать PositiveBigIntegerField
-    arrival = models.DateTimeField(null=True)
+class Fraght(models.Model):
+    ship = models.ForeignKey(Ship, related_name='fraghts', on_delete=models.CASCADE)
+    is_taken = models.BooleanField()
+    is_completed = models.BooleanField()
+    port_from = models.ForeignKey(Port, related_name='fraght_from', on_delete=models.CASCADE)
+    port_to = models.ForeignKey(Port, related_name='fraght_to', on_delete=models.CASCADE)

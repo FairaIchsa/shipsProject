@@ -1,25 +1,27 @@
 from django.db import models
 
-from mainapp.models.node_models import Node
-from mainapp.models.edge_models import SeaRoute
-from mainapp.models.icebreaker_models import Icebreaker
+from mainapp.models.port_models import Port
 
 
-class TransportShip(models.Model):
-    SHIP_TYPES = (
-        ('TS', 'Tankship'),
-        ('CS', 'Container ship'),
-        ('BC', 'Bulk carrier'))
+class Ship(models.Model):
+    navigation = models.OneToOneField('Navigation', on_delete=models.CASCADE, related_name='ship')
+    engine = models.OneToOneField('Engine', on_delete=models.CASCADE, related_name='ship')
+    behavior = models.OneToOneField('Behavior', on_delete=models.CASCADE, related_name='ship')
 
-    type = models.CharField(max_length=255, choices=SHIP_TYPES)
-    name = models.CharField(max_length=255)
-    speed = models.DecimalField(max_digits=6, decimal_places=2)
-    arc_type = models.PositiveSmallIntegerField()
-    load_capacity = models.PositiveIntegerField()
-    current_load = models.PositiveIntegerField()
 
-    icebreaker = models.ForeignKey(Icebreaker, null=True, related_name='ships', on_delete=models.CASCADE)
-    sea_port = models.ForeignKey(Node, null=True, related_name='ships', on_delete=models.CASCADE)
-    sea_route = models.ForeignKey(SeaRoute, null=True, related_name='ships', on_delete=models.CASCADE)
-    departure = models.DateTimeField(null=True)
-    arrival = models.DateTimeField(null=True)
+class Navigation(models.Model):
+    port = models.ForeignKey(Port, null=True, related_name='ships', on_delete=models.CASCADE)
+    port_from = models.ForeignKey(Port, null=True, related_name='ships_from', on_delete=models.CASCADE)
+    port_to = models.ForeignKey(Port, null=True, related_name='ships_to', on_delete=models.CASCADE)
+    current_tile = models.IntegerField(default=0)
+
+
+class Engine(models.Model):
+    max_speed = models.PositiveIntegerField()
+    average_speed = models.PositiveIntegerField()
+    caravan_speed = models.PositiveIntegerField(null=True)
+    is_working = models.BooleanField()
+
+
+class Behavior(models.Model):
+    state = models.CharField(max_length=255)
